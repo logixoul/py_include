@@ -1,0 +1,1 @@
+status = lambda text: None
