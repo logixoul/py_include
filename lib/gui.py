@@ -306,9 +306,8 @@ class MDI(QtWidgets.QWidget):
 		else:
 			widget = QtWidgets.QLabel()
 			self.addTab(widget, name)
-		cv2.imwrite("tmpout/" + name + ".png", image)
-		widget.pixmap = lib.interop.all.image_cv2qt(image)
-		widget.antigc = widget.pixmap
+		widget.setPixmap(lib.interop.all.image_cv2qt(image))
+		#widget.antigc = widget.pixmap
 		
 # addSlider flags (or-able)
 FSLIDER=1
