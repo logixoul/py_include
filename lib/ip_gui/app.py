@@ -49,7 +49,7 @@ class App:
 		if len(sys.argv) > 1:
 			path = sys.argv[1]
 		else:
-			path = "test1.jpg"
+			path = "test2.hdr"
 		self.srcImage=Static.imread(path)
 		lib.write("loaded with depth", self.srcImage.dtype)
 		self.prepareImage()
