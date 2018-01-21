@@ -2,7 +2,6 @@
 import sys
 sys.path.append("/home/stefan/include/py") # tmp before restarting ubuntu
 import lib.gui as tgui
-print("calling tgui.init()")
 import colorama
 
 import cv2, math, numpy, itertools
@@ -35,7 +34,7 @@ class App:
 		#tgui.mdi.options.quality = App.DEFAULT_QUALITY
 		
 		tgui.mdi.sliders.onMoved = self.sliderMoved
-		tgui.addSlider("resolution", 1, 1000, 1000)
+		tgui.addSlider("resolution", 1, 1000, 500)
 		
 		#tgui.addSlider("method3_thres", 1, 100, 4, lambda x: x / 100.0)
 		
@@ -49,10 +48,11 @@ class App:
 		if len(sys.argv) > 1:
 			path = sys.argv[1]
 		else:
-			path = "test2.hdr"
-		self.srcImage=Static.imread(path)
-		lib.write("loaded with depth", self.srcImage.dtype)
-		self.prepareImage()
+			path = "test1.hdr"
+		srcImage=Static.imread(path)
+		lib.write("loaded with depth", srcImage.dtype)
+		#self.prepareImage()
+		self.onNewImage(srcImage)
 		self.update()
 		
 	def prepareImage(self):
@@ -67,7 +67,7 @@ class App:
 		subprocess.call("wmctrl -F -a main.py", shell=True)
 	
 	def onClipboardChanged(self):
-		if not QtGui.QApplication.clipboard().mimeData().hasImage():
+		if not QtWidgets.QApplication.clipboard().mimeData().hasImage():
 			return
 		lib.write("activating")
 		Static.raiseWindow()
@@ -120,6 +120,7 @@ class App:
 		lib.write("dropped")
 		self.srcImage = newImage
 		self.prepareImage()
+		tgui.srcShape = self.srcImage.shape
 		self.update()
 		
 	def onKey(self, key):

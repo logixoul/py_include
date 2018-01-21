@@ -10,6 +10,7 @@ from lib.lang import StaticMethod
 app = None
 mdi = None
 options = None
+srcShape = None
 def init():
 	import signal
 	signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -253,12 +254,14 @@ class MDI(QtWidgets.QWidget):
 		lib.write("dropEvent. mime formats:", e.mimeData().formats()[0])
 		lib.write("hasimage? ", e.mimeData().hasImage())
 		if not e.mimeData().hasImage():
-			if e.mimeData().formats().contains("text/uri-list"):
+			if "text/uri-list" in e.mimeData().formats():
 				filePath=e.mimeData().data("text/uri-list")
 				filePath=str(filePath)[7:-2].replace("%20", " ")
+				filePath=filePath.replace("\r", "")
 				#def bytes(s):
 				#	return "[%s]" % ", ".join(str(ord(c)) for c in s)
-				image = cv2.imread(filePath, cv2.CV_LOAD_IMAGE_UNCHANGED)
+				print("will try to imread from ", filePath)
+				image = cv2.imread(filePath, cv2.IMREAD_UNCHANGED)
 				print("imgshape", image.shape)
 				import lib.cv3 as cv3
 				#r,g,b=cv3.split(image)
@@ -304,9 +307,15 @@ class MDI(QtWidgets.QWidget):
 		if name in self.tabs:
 			widget = self.tabs[name]
 		else:
-			widget = QtWidgets.QLabel()
+			global srcShape
+			widget = QtWidgets.QWidget()
+			layout = QtWidgets.QVBoxLayout(widget)
+			widget.label = QtWidgets.QLabel() # attached property
+			layout.addWidget(widget.label)
+			widget.label.setScaledContents(True)
 			self.addTab(widget, name)
-		widget.setPixmap(lib.interop.all.image_cv2qt(image))
+			widget.resize(srcShape[0], srcShape[1])
+		widget.label.setPixmap(lib.interop.all.image_cv2qt(image))
 		#widget.antigc = widget.pixmap
 		
 # addSlider flags (or-able)

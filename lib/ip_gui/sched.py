@@ -14,11 +14,11 @@ def thread(runnable, desc = "<no-description>"):
 	thread.start()
 	global _reachedId
 	_reachedId_copy = _reachedId
-	lib.write("[sched.thread] thread %s started (\"%s\")" % (_reachedId, desc))
+	#lib.write("[sched.thread] thread %s started (\"%s\")" % (_reachedId, desc))
 	with QtCore.QMutexLocker(mutex):
 		_threads.append(thread)
 	def onFinished():
-		lib.write("[sched.thread] thread %s ended (\"%s\")" % (_reachedId_copy, desc))
+		#lib.write("[sched.thread] thread %s ended (\"%s\")" % (_reachedId_copy, desc))
 		with QtCore.QMutexLocker(mutex):
 			_threads.remove(thread)
 	thread.finished.connect(onFinished)
