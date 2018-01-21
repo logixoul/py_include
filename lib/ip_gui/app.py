@@ -35,7 +35,7 @@ class App:
 		#tgui.mdi.options.quality = App.DEFAULT_QUALITY
 		
 		tgui.mdi.sliders.onMoved = self.sliderMoved
-		tgui.addSlider("resolution", 1, 1000, 500)
+		tgui.addSlider("resolution", 1, 1000, 1000)
 		
 		#tgui.addSlider("method3_thres", 1, 100, 4, lambda x: x / 100.0)
 		
